@@ -3,6 +3,9 @@ const connectDB = require('./config/db');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
+const authRoutes = require("./routes/authRoutes.js");
+
+
 // Load environment variables
 dotenv.config();
 
@@ -17,14 +20,14 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// authentication middleware 
+app.use("/api/auth",authRoutes);
 
-// Placeholder for routes (to be added later)
-// app.use('/api/auth', require('./routes/authRoutes'));
-// app.use('/api/courses', require('./routes/courseRoutes'));
-// app.use('/api/users', require('./routes/userRoutes'));
 
-// Error handling middleware
-// app.use(require('./middleware/errorMiddleware'));
+
+
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
