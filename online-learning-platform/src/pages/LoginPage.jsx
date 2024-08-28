@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from '../api/axios';
+import instance from '../api/axios';
 
 
 const LoginPage = () => {
@@ -9,7 +9,7 @@ const LoginPage = () => {
 
     const handleSubmit =(e)=>{
         e.preventDefault();
-        axios.post('/users/login',{ email, password })
+        instance.post('/login',{ email, password })
         .then(response =>{
             console.log(response.data);
             // Store JWT token

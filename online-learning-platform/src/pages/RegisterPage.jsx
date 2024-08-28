@@ -1,14 +1,39 @@
 import React, { useState } from 'react';
-import axios from '../api/axios';
+import { useNavigate } from 'react-router-dom';
+import instance from '../api/axios';
 
 
 const RegisterPage = () => {
+
+    const navigate = useNavigate();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+
+    const handleSubmit = async (e) =>{
+
+
+
+      e.preventDefault();
+
+      if (password !== confirmPassword) {
+        setError('Passwords do not match');
+        return;
+      }
+
+      try {
+        await instance.post('/register', { name, email, password });
+        // Redirect to login or home page
+        navigate('/login'); 
+
+      } catch (error) {
+        setError(error.response?.data?.message || 'Registration failed');
+      }
+
+    }
 
 
   return (
