@@ -85,19 +85,22 @@ const deleteCourse = asyncHandler(async (req, res) => {
     const course = await Course.findById(req.params.id);
 
     if (course) {
+        // Check if the user is the instructor
         if (course.instructor.toString() !== req.user._id.toString()) {
-          res.status(401);
-          throw new Error('Not authorized to delete this course');
+            res.status(401);
+            throw new Error('Not authorized to delete this course');
         }
-    
-        await course.remove();
-        res.json({ message: 'Course removed'});
 
-    } else{
-    res.status(404);
-    throw new Error('Course not found');
-  }
+        // Delete the course using deleteOne
+        await Course.deleteOne({ _id: req.params.id });
+        res.json({ message: 'Course removed' });
+        
+    } else {
+        res.status(404);
+        throw new Error('Course not found');
+    }
 });
+
 
 module.exports = {
     createCourse,
